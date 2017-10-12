@@ -5,10 +5,10 @@ library(stargazer)                                    # To export html code for 
 source("~/Box Sync/Work/Statistics/Code/setRows.R")   # for setting rows
 
 # Production data
-RICARDIANDATA <- read_dta("~/Box Sync/Work/Writing/Manuscripts/Submitted/Fonio nutritional diversity/RICARDIANDATA.dta")
+RICARDIANDATA <- read_dta("~/Box Sync/Work/Writing/Manuscripts/Published/Wood (J Appl Ecol 2017)/RICARDIANDATA.dta")
 
 # Nutrient data
-nutr <- read.csv("~/Box Sync/Work/Writing/Manuscripts/Submitted/Fonio nutritional diversity/nutrientData.csv")
+nutr <- read.csv("~/Box Sync/Work/Writing/Manuscripts/Published/Wood (J Appl Ecol 2017)/nutrientData.csv")
 
 # Create new data frame of production data in kg
 rice <- RICARDIANDATA$riceSacks*50
@@ -45,7 +45,7 @@ diversity_data_frame <- data.frame(as.factor(diversity_scores$nbsp),diversity_sc
 names(diversity_data_frame) <- c("SpeciesNumber","FDis","FDiv","FEve","FRic")
 
 # Compare metrics to PNA
-pna <- read.csv("~/Box Sync/Work/Writing/Manuscripts/Submitted/Fonio nutritional diversity/J Appl Ecol Submission/PNA Analyses/PNA.csv")
+pna <- read.csv("~/Box Sync/Work/Writing/Manuscripts/Published/Wood (J Appl Ecol 2017)/J Appl Ecol Submission/PNA Analyses/PNA.csv")
 diversity_data_frame <- cbind(diversity_data_frame,pna)
 
 # Statistical tests based on ANOVA
@@ -113,3 +113,18 @@ boxplot(FDis~SpeciesNumber,data=diversity_sims_data_frame,ylab="Functional dispe
 boxplot(FDiv~SpeciesNumber,data=diversity_sims_data_frame,ylab="Functional divergence (FDiv)")
 boxplot(FEve~SpeciesNumber,data=diversity_sims_data_frame,ylab="Functional evenness (FEve)")
 boxplot(FRic~SpeciesNumber,data=diversity_sims_data_frame,ylab="Functional richness (FRic)")
+
+
+div_sim_res_low <- as.data.frame(diversity_simulations_low_traits$results)
+
+diversity_sims_low_data_frame <- data.frame(div_sim_res_low$nb.sp,div_sim_res$FDis,
+                                        div_sim_res_low$FDiv,div_sim_res$FEve,
+                                        div_sim_res_low$FRic)
+names(diversity_sims_low_data_frame) <- c("SpeciesNumber","FDis","FDiv","FEve","FRic")
+pairs(diversity_sims_low_data_frame[,-1], upper.panel=NULL)
+
+par(mfrow=c(2,2))
+boxplot(FDis~SpeciesNumber,data=diversity_sims_low_data_frame,ylab="Functional dispersion (FDis)")
+boxplot(FDiv~SpeciesNumber,data=diversity_sims_low_data_frame,ylab="Functional divergence (FDiv)")
+boxplot(FEve~SpeciesNumber,data=diversity_sims_low_data_frame,ylab="Functional evenness (FEve)")
+boxplot(FRic~SpeciesNumber,data=diversity_sims_low_data_frame,ylab="Functional richness (FRic)")
